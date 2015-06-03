@@ -8,6 +8,10 @@ $(document).ready(function() {
 	var addMessage = function (message) {
 		messages.append('<div>' + message + '</div>');
 	};
+	
+	if (userName) {
+		socket.emit('login', userName);
+	}
 
 	input.on('keydown', function(event) {
 		if (event.keyCode != 13) {

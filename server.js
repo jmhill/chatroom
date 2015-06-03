@@ -15,6 +15,12 @@ io.on('connection', function(socket) {
 		console.log('Message received: ', message);
 		socket.broadcast.emit('message', message);
 	});
+
+	socket.on('login', function(user) {
+		console.log(user + ' just logged in');
+		var loginMessage = user + ' just logged in';
+		io.sockets.emit('message', loginMessage);
+	})
 });
 
 server.listen(8080);
