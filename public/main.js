@@ -3,6 +3,8 @@ $(document).ready(function() {
 	var input = $('input');
 	var messages = $('#messages');
 
+	var userName = prompt('What is your name?');
+
 	var addMessage = function (message) {
 		messages.append('<div>' + message + '</div>');
 	};
@@ -12,7 +14,7 @@ $(document).ready(function() {
 			return;
 		}
 
-		var message = input.val();
+		var message = userName + ': ' + input.val();
 		addMessage(message);
 		socket.emit('message', message);
 		input.val('');
