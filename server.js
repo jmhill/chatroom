@@ -20,7 +20,11 @@ io.on('connection', function(socket) {
 		console.log(user + ' just logged in');
 		var loginMessage = user + ' just logged in';
 		io.sockets.emit('message', loginMessage);
-	})
+		socket.on('disconnect', function() {
+			var disconnectMessage = user + ' just logged out.';
+			socket.broadcast.emit('message', disconnectMessage);
+		});
+	});
 });
 
 server.listen(8080);
