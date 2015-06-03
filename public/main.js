@@ -2,11 +2,23 @@ $(document).ready(function() {
 	var socket = io();
 	var input = $('input');
 	var messages = $('#messages');
+	var userlist = $('#userlist');
 
 	var userName = prompt('What is your name?') || 'Anonymous User';
 
 	var addMessage = function (message) {
 		messages.append('<div>' + message + '</div>');
+	};
+
+	var addUser = function (user) {
+		userlist.append('<div>' + user + '</div>');
+	};
+
+	var getUsers = function (users) {
+		userlist.empty();
+		users.forEach(function(user){
+			addUser(user);
+		});
 	};
 
 	socket.emit('login', userName);
@@ -23,5 +35,6 @@ $(document).ready(function() {
 	});
 
 	socket.on('message', addMessage);
-
+	socket.on('new user', addUser);
+	socket.on('get users', getUsers);
 });

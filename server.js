@@ -8,6 +8,8 @@ app.use(express.static('public'));
 var server = http.Server(app);
 var io = socket_io(server);
 
+var users = [];
+
 io.on('connection', function(socket) {
 	console.log('Client connected.');
 
@@ -17,12 +19,22 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('login', function(user) {
+		users.push(user);
+
+		socket.emit('get users', users);
+
 		console.log(user + ' just logged in');
 		var loginMessage = user + ' just logged in';
-		io.sockets.emit('message', loginMessage);
+		socket.broadcast.emit('message', loginMessage);
+		socket.broadcast.emit('new user', user);
+		
 		socket.on('disconnect', function() {
+			users = users.filter(function(name) {
+				return name !== user;
+			});
 			var disconnectMessage = user + ' just logged out.';
 			socket.broadcast.emit('message', disconnectMessage);
+			socket.broadcast.emit('get users', users);
 		});
 	});
 });
